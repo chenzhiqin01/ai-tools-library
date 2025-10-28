@@ -1,0 +1,3075 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>晨曦 AI 工具库 - AIGC 行业领跑者</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* 自定义滚动条 */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+        /* 渐变背景 */
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .tech-gradient {
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 50%, #10b981 100%);
+        }
+
+        /* 沙漠山脉背景 */
+        .desert-bg {
+            background: linear-gradient(180deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .desert-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 400"><path d="M0,200 Q300,100 600,200 T1200,200 L1200,400 L0,400 Z" fill="%23000000" opacity="0.2"/><path d="M0,250 Q400,150 800,250 T1200,250 L1200,400 L0,400 Z" fill="%23000000" opacity="0.3"/></svg>') no-repeat bottom;
+            background-size: cover;
+            opacity: 0.3;
+        }
+
+        /* 卡片悬停效果 */
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.15);
+        }
+
+        /* 现代SAAS导航栏样式 */
+        .nav-item {
+            position: relative;
+            transition: all 0.2s ease;
+        }
+
+        .nav-item:hover {
+            transform: translateX(2px);
+        }
+
+        .nav-item.active {
+            background: linear-gradient(90deg, rgba(59, 130, 246, 0.1) 0%, rgba(59, 130, 246, 0.05) 100%);
+            border-left: 3px solid #3b82f6;
+            padding-left: 9px;
+        }
+
+        .nav-item.active::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 3px;
+            height: 20px;
+            background: #3b82f6;
+            border-radius: 0 2px 2px 0;
+        }
+
+        /* 移除原有导航样式的影响 */
+        .nav-item svg {
+            color: inherit;
+        }
+
+        /* 新横幅样式 */
+        .banner-container {
+            height: 225px;
+            border-radius: 8px;
+            margin: 16px;
+        }
+
+        /* 响应式横幅布局 - 深色沙丘背景优化 */
+        @media (max-width: 768px) {
+            .banner-container {
+                height: auto;
+                min-height: 180px;
+                margin: 8px;
+            }
+
+            .banner-container .relative.z-10 {
+                padding: 16px;
+                text-align: center;
+            }
+
+            .banner-container h2 {
+                font-size: 24px !important;
+                margin-bottom: 16px !important;
+                text-align: center;
+            }
+
+            .banner-container p {
+                font-size: 15px !important;
+                text-align: center;
+                margin-bottom: 12px;
+            }
+
+            .banner-container .flex.items-center.justify-between {
+                flex-direction: column;
+                gap: 16px !important;
+                align-items: center;
+                text-align: center;
+            }
+
+            .banner-container .flex.items-center.gap-3 {
+                flex-direction: column;
+                gap: 8px !important;
+                align-items: center;
+            }
+
+            .qr-container {
+                align-self: center;
+                margin-top: 8px;
+            }
+
+            .qr-container .w-\[90px\] {
+                width: 80px !important;
+                height: 80px !important;
+            }
+
+            .qr-container .w-\[72px\] {
+                width: 64px !important;
+                height: 64px !important;
+            }
+
+            .banner-container .span.text-yellow-400 {
+                font-size: 18px !important;
+            }
+        }
+
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .banner-container h2 {
+                font-size: 30px !important;
+                margin-bottom: 20px !important;
+            }
+
+            .banner-container p {
+                font-size: 17px !important;
+            }
+
+            .banner-container .span.text-yellow-400 {
+                font-size: 19px !important;
+            }
+
+            .qr-container .w-\[90px\] {
+                width: 85px !important;
+                height: 85px !important;
+            }
+
+            .qr-container .w-\[72px\] {
+                width: 68px !important;
+                height: 68px !important;
+            }
+        }
+
+        @media (min-width: 1200px) {
+            .banner-container h2 {
+                font-size: 28px !important;
+            }
+
+            .banner-container p {
+                font-size: 19px !important;
+            }
+
+            .qr-container .w-\[90px\] {
+                width: 95px !important;
+                height: 95px !important;
+            }
+
+            .qr-container .w-\[72px\] {
+                width: 76px !important;
+                height: 76px !important;
+            }
+        }
+
+        /* 品牌标志动画 */
+        .brand-logo {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(45deg, #3b82f6, #8b5cf6, #10b981);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        /* 二维码样式 */
+        .qr-code {
+            width: 120px;
+            height: 120px;
+            background: white;
+            border-radius: 8px;
+            padding: 8px;
+            position: relative;
+        }
+
+        .qr-code::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            height: 80%;
+            background: repeating-conic-gradient(#000 0deg 90deg, #fff 90deg 180deg);
+            background-size: 20px 20px;
+            opacity: 0.3;
+        }
+
+        /* 平滑滚动 */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            main {
+                margin-left: 0 !important;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .mobile-menu-btn {
+                display: none;
+            }
+        }
+
+        /* 分类标签样式 */
+        .category-tag {
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .category-tag.active {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .category-tag:hover:not(.active) {
+            background: #f3f4f6;
+            transform: translateY(-1px);
+        }
+
+        /* 工具卡片网格 */
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        @media (min-width: 1024px) {
+            .tools-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        @media (max-width: 1023px) and (min-width: 768px) {
+            .tools-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 767px) {
+            .tools-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .tools-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* 工具卡片动画 */
+        .tool-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        .tool-card:active {
+            transform: translateY(-2px) scale(1.01);
+        }
+
+        /* 工具图标容器 */
+        .tool-icon {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tool-icon::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent);
+            transform: rotate(45deg);
+            transition: all 0.6s;
+            opacity: 0;
+        }
+
+        .tool-card:hover .tool-icon::before {
+            animation: shine 0.6s ease-in-out;
+        }
+
+        @keyframes shine {
+            0% {
+                transform: translateX(-100%) translateY(-100%) rotate(45deg);
+                opacity: 0;
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(100%) translateY(100%) rotate(45deg);
+                opacity: 0;
+            }
+        }
+
+        /* 工具分类标签 */
+        .tool-category {
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* AI 工具卡片样式 - 匹配参考截图 */
+        .ai-tool-card {
+            height: 80px;
+            background-color: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 16px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .ai-tool-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .ai-tool-card:hover {
+            border-color: #d1d5db;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+            transform: translateY(-2px);
+        }
+
+        .ai-tool-card:hover::before {
+            opacity: 1;
+        }
+
+        /* AI 工具图标容器 */
+        .ai-tool-icon {
+            width: 40px;
+            height: 40px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+        }
+
+        /* DeepSeek 图标 - 蓝色鲸鱼 */
+        .icon-deepseek {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            position: relative;
+        }
+
+        .icon-deepseek::after {
+            content: '🐋';
+            font-size: 24px;
+            filter: brightness(0) invert(1);
+        }
+
+        /* Kimi 图标 - 黑底白K */
+        .icon-kimi {
+            background-color: #000000;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+            font-family: Arial, sans-serif;
+        }
+
+        /* 豆包图标 - 人物头像 */
+        .icon-doubao {
+            background: linear-gradient(135deg, #ff6b35, #f7931e);
+            position: relative;
+        }
+
+        .icon-doubao::after {
+            content: '👤';
+            font-size: 24px;
+            filter: brightness(0) invert(1);
+        }
+
+        /* 腾讯元宝图标 */
+        .icon-tencent {
+            background: linear-gradient(135deg, #00c851, #00a046);
+            position: relative;
+        }
+
+        .icon-tencent::after {
+            content: '💎';
+            font-size: 22px;
+        }
+
+        /* 通义千问图标 */
+        .icon-tongyi {
+            background: linear-gradient(135deg, #ff9500, #ff6200);
+            position: relative;
+        }
+
+        .icon-tongyi::after {
+            content: '💬';
+            font-size: 22px;
+        }
+
+        /* 智谱清言图标 */
+        .icon-zhipu {
+            background: linear-gradient(135deg, #6366f1, #4f46e5);
+            position: relative;
+        }
+
+        .icon-zhipu::after {
+            content: '🎓';
+            font-size: 22px;
+        }
+
+        /* 文心一言图标 */
+        .icon-wenxin {
+            background: linear-gradient(135deg, #dc2626, #b91c1c);
+            position: relative;
+        }
+
+        .icon-wenxin::after {
+            content: '✍️';
+            font-size: 22px;
+        }
+
+        /* 讯飞星火图标 */
+        .icon-xunfei {
+            background: linear-gradient(135deg, #0891b2, #0e7490);
+            position: relative;
+        }
+
+        .icon-xunfei::after {
+            content: '⚡';
+            font-size: 22px;
+        }
+
+        /* 纳米AI图标 */
+        .icon-nami {
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            position: relative;
+        }
+
+        .icon-nami::after {
+            content: '🔬';
+            font-size: 22px;
+        }
+
+        /* 秘塔AI图标 */
+        .icon-mita {
+            background: linear-gradient(135deg, #10b981, #059669);
+            position: relative;
+        }
+
+        .icon-mita::after {
+            content: '🔍';
+            font-size: 22px;
+        }
+
+        /* 海螺AI图标 */
+        .icon-hailuo {
+            background: linear-gradient(135deg, #ec4899, #db2777);
+            position: relative;
+        }
+
+        .icon-hailuo::after {
+            content: '🐚';
+            font-size: 22px;
+        }
+
+        /* 阶跃AI图标 */
+        .icon-jieyue {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            position: relative;
+        }
+
+        .icon-jieyue::after {
+            content: '📈';
+            font-size: 22px;
+        }
+
+        /* ChatGPT图标 */
+        .icon-chatgpt {
+            background: linear-gradient(135deg, #06b6d4, #0891b2);
+            position: relative;
+        }
+
+        .icon-chatgpt::after {
+            content: '🤖';
+            font-size: 22px;
+        }
+
+        /* Gemini图标 */
+        .icon-gemini {
+            background: linear-gradient(135deg, #4285f4, #1a73e8);
+            position: relative;
+        }
+
+        .icon-gemini::after {
+            content: '💎';
+            font-size: 22px;
+        }
+
+        /* Claude图标 */
+        .icon-claude {
+            background: linear-gradient(135deg, #f97316, #ea580c);
+            position: relative;
+        }
+
+        .icon-claude::after {
+            content: '🎭';
+            font-size: 22px;
+        }
+
+        /* Grok图标 */
+        .icon-grok {
+            background: linear-gradient(135deg, #000000, #374151);
+            position: relative;
+        }
+
+        .icon-grok::after {
+            content: '🚀';
+            font-size: 22px;
+        }
+
+        /* AI 工具网格布局 */
+        .ai-tools-grid,
+        .ai-art-tools-grid,
+        .ai-art-tools-expanded-grid,
+        .ai-video-tools-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* AI 音频工具网格布局 - 4列布局，左对齐 */
+        .ai-audio-tools-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            max-width: 1200px;
+        }
+
+        /* AI 漫画工具网格布局 - 4列布局 */
+        .ai-comic-tools-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            max-width: 1200px;
+        }
+
+        /* AI 绘画工具图标样式 */
+        /* Stable Diffusion 图标 */
+        .icon-stable-diffusion {
+            background: linear-gradient(135deg, #10b981, #059669);
+            position: relative;
+        }
+
+        .icon-stable-diffusion::after {
+            content: '🎨';
+            font-size: 22px;
+            filter: brightness(0) invert(1);
+        }
+
+        /* Midjourney 图标 */
+        .icon-midjourney {
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            position: relative;
+        }
+
+        .icon-midjourney::after {
+            content: '✨';
+            font-size: 22px;
+        }
+
+        /* DALL-E 图标 */
+        .icon-dalle {
+            background: linear-gradient(135deg, #06b6d4, #0891b2);
+            position: relative;
+        }
+
+        .icon-dalle::after {
+            content: '🖼️';
+            font-size: 22px;
+        }
+
+        /* 文心一格图标 */
+        .icon-wenxin-yige {
+            background: linear-gradient(135deg, #dc2626, #b91c1c);
+            position: relative;
+        }
+
+        .icon-wenxin-yige::after {
+            content: '🖌️';
+            font-size: 22px;
+        }
+
+        /* 通义万相图标 */
+        .icon-tongyi-wanxiang {
+            background: linear-gradient(135deg, #ff9500, #ff6200);
+            position: relative;
+        }
+
+        .icon-tongyi-wanxiang::after {
+            content: '🎭';
+            font-size: 22px;
+        }
+
+        /* 讯飞星火绘画图标 */
+        .icon-xunfei-paint {
+            background: linear-gradient(135deg, #0891b2, #0e7490);
+            position: relative;
+        }
+
+        .icon-xunfei-paint::after {
+            content: '🎪';
+            font-size: 22px;
+        }
+
+        /* 腾讯 AI 绘画图标 */
+        .icon-tencent-paint {
+            background: linear-gradient(135deg, #00c851, #00a046);
+            position: relative;
+        }
+
+        .icon-tencent-paint::after {
+            content: '🎯';
+            font-size: 22px;
+        }
+
+        /* 美图 AI 图标 */
+        .icon-meitu {
+            background: linear-gradient(135deg, #ec4899, #db2777);
+            position: relative;
+        }
+
+        .icon-meitu::after {
+            content: '💄';
+            font-size: 22px;
+        }
+
+        /* 美图 AI 绘画图标 */
+        .icon-meitu-paint {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            position: relative;
+        }
+
+        .icon-meitu-paint::after {
+            content: '🌟';
+            font-size: 22px;
+        }
+
+        /* 美图视觉大模型图标 */
+        .icon-meitu-vision {
+            background: linear-gradient(135deg, #6366f1, #4f46e5);
+            position: relative;
+        }
+
+        .icon-meitu-vision::after {
+            content: '👁️';
+            font-size: 22px;
+        }
+
+        /* 意间 AI 图标 */
+        .icon-yijian {
+            background: linear-gradient(135deg, #14b8a6, #0d9488);
+            position: relative;
+        }
+
+        .icon-yijian::after {
+            content: '🎨';
+            font-size: 22px;
+        }
+
+        /* 意间 AI 绘画图标 */
+        .icon-yijian-paint {
+            background: linear-gradient(135deg, #a855f7, #9333ea);
+            position: relative;
+        }
+
+        .icon-yijian-paint::after {
+            content: '🖼️';
+            font-size: 22px;
+        }
+
+        /* 意间 AI 绘画图标2 */
+        .icon-yijian-paint-2 {
+            background: linear-gradient(135deg, #f43f5e, #e11d48);
+            position: relative;
+        }
+
+        .icon-yijian-paint-2::after {
+            content: '🎪';
+            font-size: 22px;
+        }
+
+        /* Leonardo AI 图标 */
+        .icon-leonardo {
+            background: linear-gradient(135deg, #f97316, #ea580c);
+            position: relative;
+        }
+
+        .icon-leonardo::after {
+            content: '🦁';
+            font-size: 22px;
+        }
+
+        /* Firefly 图标 */
+        .icon-firefly {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            position: relative;
+        }
+
+        .icon-firefly::after {
+            content: '✨';
+            font-size: 22px;
+        }
+
+        /* Canva AI 图标 */
+        .icon-canva {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            position: relative;
+        }
+
+        .icon-canva::after {
+            content: '🎨';
+            font-size: 22px;
+        }
+
+        /* 新版 AI 绘画工具图标样式 */
+        /* 即梦 AI 图标 - 抖音旗下，黑底蓝鸟 */
+        .icon-jimeng-ai {
+            background-color: #000000;
+            color: #00aaff;
+            position: relative;
+        }
+
+        .icon-jimeng-ai::after {
+            content: '🐦';
+            font-size: 22px;
+            filter: brightness(0) invert(1) sepia(1) hue-rotate(180deg) saturate(3);
+        }
+
+        /* 可灵 AI 图标 - 快手旗下，橙色渐变 */
+        .icon-keling-ai {
+            background: linear-gradient(135deg, #ff6b00, #ff4500);
+            position: relative;
+        }
+
+        .icon-keling-ai::after {
+            content: '🎬';
+            font-size: 22px;
+            filter: brightness(0) invert(1);
+        }
+
+        /* 商汤秒画图标 - 红色渐变 */
+        .icon-shangtang-miaohua {
+            background: linear-gradient(135deg, #dc2626, #b91c1c);
+            position: relative;
+        }
+
+        .icon-shangtang-miaohua::after {
+            content: '⚡';
+            font-size: 22px;
+        }
+
+        /* 通义万相图标 - 紫底白色图标 */
+        .icon-tongyi-wanxiang-2 {
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            position: relative;
+        }
+
+        .icon-tongyi-wanxiang-2::after {
+            content: '🎨';
+            font-size: 22px;
+            filter: brightness(0) invert(1);
+        }
+
+        /* MJ 绘画中文站图标 - 蓝色渐变 */
+        .icon-mj-painting {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            position: relative;
+        }
+
+        .icon-mj-painting::after {
+            content: '🖼️';
+            font-size: 22px;
+        }
+
+        /* LM arena 图标 - 绿色渐变 */
+        .icon-lm-arena {
+            background: linear-gradient(135deg, #10b981, #059669);
+            position: relative;
+        }
+
+        .icon-lm-arena::after {
+            content: '🏆';
+            font-size: 22px;
+        }
+
+        /* 无界 AI 图标 - 青色渐变 */
+        .icon-wujie-ai {
+            background: linear-gradient(135deg, #06b6d4, #0891b2);
+            position: relative;
+        }
+
+        .icon-wujie-ai::after {
+            content: '♾️';
+            font-size: 22px;
+        }
+
+        /* 腾讯混元 3D 图标 - 深蓝渐变 */
+        .icon-tencent-hunyuan-3d {
+            background: linear-gradient(135deg, #1e40af, #1e3a8a);
+            position: relative;
+        }
+
+        .icon-tencent-hunyuan-3d::after {
+            content: '🎲';
+            font-size: 22px;
+        }
+
+        /* LiblibAI 图标 - 粉色渐变 */
+        .icon-liblib-ai {
+            background: linear-gradient(135deg, #ec4899, #db2777);
+            position: relative;
+        }
+
+        .icon-liblib-ai::after {
+            content: '📚';
+            font-size: 22px;
+        }
+
+        /* 吐司 AI 图标 - 棕色渐变 */
+        .icon-tuosi-ai {
+            background: linear-gradient(135deg, #d97706, #b45309);
+            position: relative;
+        }
+
+        .icon-tuosi-ai::after {
+            content: '🍞';
+            font-size: 22px;
+        }
+
+        /* 堆友 AI 图标 - 黄色渐变 */
+        .icon-duiyou-ai {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            position: relative;
+        }
+
+        .icon-duiyou-ai::after {
+            content: '👥';
+            font-size: 22px;
+        }
+
+        /* 海艺 AI 图标 - 蓝绿渐变 */
+        .icon-haiyi-ai {
+            background: linear-gradient(135deg, #14b8a6, #0d9488);
+            position: relative;
+        }
+
+        .icon-haiyi-ai::after {
+            content: '🌊';
+            font-size: 22px;
+        }
+
+        /* 神采 AI 图标 - 金色渐变 */
+        .icon-shencai-ai {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            position: relative;
+        }
+
+        .icon-shencai-ai::after {
+            content: '✨';
+            font-size: 22px;
+        }
+
+        /* 星流图标 - 深紫渐变 */
+        .icon-xingliu {
+            background: linear-gradient(135deg, #7c3aed, #6d28d9);
+            position: relative;
+        }
+
+        .icon-xingliu::after {
+            content: '🌟';
+            font-size: 22px;
+        }
+
+        /* 奇域图标 - 中国红渐变 */
+        .icon-qiyu {
+            background: linear-gradient(135deg, #dc2626, #991b1b);
+            position: relative;
+        }
+
+        .icon-qiyu::after {
+            content: '🏮';
+            font-size: 22px;
+        }
+
+        /* 美图设计室图标 - 粉紫渐变 */
+        .icon-meitu-design {
+            background: linear-gradient(135deg, #a855f7, #9333ea);
+            position: relative;
+        }
+
+        .icon-meitu-design::after {
+            content: '🎨';
+            font-size: 22px;
+        }
+
+        /* WHEE 图标 - 橙红渐变 */
+        .icon-whee {
+            background: linear-gradient(135deg, #f97316, #ea580c);
+            position: relative;
+        }
+
+        .icon-whee::after {
+            content: '🎪';
+            font-size: 22px;
+        }
+
+        /* 搞定设计图标 - 绿色渐变 */
+        .icon-gaoding-design {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            position: relative;
+        }
+
+        .icon-gaoding-design::after {
+            content: '✅';
+            font-size: 22px;
+        }
+
+        /* 美间商拍图标 - 粉色渐变 */
+        .icon-meijian-shangpai {
+            background: linear-gradient(135deg, #ec4899, #db2777);
+            position: relative;
+        }
+
+        .icon-meijian-shangpai::after {
+            content: '📸';
+            font-size: 22px;
+        }
+
+        /* PhotoStudio AI 图标 - 深蓝渐变 */
+        .icon-photostudio-ai {
+            background: linear-gradient(135deg, #1e40af, #1e3a8a);
+            position: relative;
+        }
+
+        .icon-photostudio-ai::after {
+            content: '📷';
+            font-size: 22px;
+        }
+
+        /* 可图 AI 试衣图标 - 紫色渐变 */
+        .icon-keu-ai-shiyi {
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            position: relative;
+        }
+
+        .icon-keu-ai-shiyi::after {
+            content: '👗';
+            font-size: 22px;
+        }
+
+        /* 绘蛙图标 - 青绿渐变 */
+        .icon-huiwa {
+            background: linear-gradient(135deg, #14b8a6, #0d9488);
+            position: relative;
+        }
+
+        .icon-huiwa::after {
+            content: '🐸';
+            font-size: 22px;
+        }
+
+        /* AI 设计工坊图标 - 橙色渐变 */
+        .icon-ai-design-workshop {
+            background: linear-gradient(135deg, #fb923c, #f97316);
+            position: relative;
+        }
+
+        .icon-ai-design-workshop::after {
+            content: '🛠️';
+            font-size: 22px;
+        }
+
+        /* 老照片修复图标 - 褐色渐变 */
+        .icon-old-photo-restore {
+            background: linear-gradient(135deg, #92400e, #78350f);
+            position: relative;
+        }
+
+        .icon-old-photo-restore::after {
+            content: '🖼️';
+            font-size: 22px;
+        }
+
+        /* 一键抠图图标 - 蓝色渐变 */
+        .icon-one-click-koutu {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            position: relative;
+        }
+
+        .icon-one-click-koutu::after {
+            content: '✂️';
+            font-size: 22px;
+        }
+
+        /* 一键擦除图标 - 红色渐变 */
+        .icon-one-click-erase {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            position: relative;
+        }
+
+        .icon-one-click-erase::after {
+            content: '🧹';
+            font-size: 22px;
+        }
+
+        /* ChatPS 图标 - 绿色渐变 */
+        .icon-chatps {
+            background: linear-gradient(135deg, #10b981, #059669);
+            position: relative;
+        }
+
+        .icon-chatps::after {
+            content: '💬';
+            font-size: 22px;
+        }
+
+        /* 空卡片图标 */
+        .icon-empty {
+            background: linear-gradient(135deg, #e5e7eb, #d1d5db);
+            position: relative;
+        }
+
+        .icon-empty::after {
+            content: '➕';
+            font-size: 22px;
+            color: #9ca3af;
+        }
+
+        /* AI 视频工具图标样式 */
+        /* 即梦 AI 视频图标 - 抖音旗下，黑底蓝鸟 */
+        .icon-jimeng-video {
+            background-color: #000000;
+            color: #00aaff;
+            position: relative;
+        }
+
+        .icon-jimeng-video::after {
+            content: '🐦';
+            font-size: 22px;
+            filter: brightness(0) invert(1) sepia(1) hue-rotate(180deg) saturate(3);
+        }
+
+        /* 可灵 AI 视频图标 - 快手旗下，橙色渐变 */
+        .icon-keling-video {
+            background: linear-gradient(135deg, #ff6b00, #ff4500);
+            position: relative;
+        }
+
+        .icon-keling-video::after {
+            content: '🎬';
+            font-size: 22px;
+            filter: brightness(0) invert(1);
+        }
+
+        /* 海螺视频图标 - 黑底橙红渐变 */
+        .icon-hailuo-video {
+            background: linear-gradient(135deg, #000000, #ff4500);
+            position: relative;
+        }
+
+        .icon-hailuo-video::after {
+            content: '🐚';
+            font-size: 22px;
+            filter: brightness(0) invert(1);
+        }
+
+        /* 星火绘镜图标 - 青色渐变 */
+        .icon-xinghui-huijing {
+            background: linear-gradient(135deg, #0891b2, #0e7490);
+            position: relative;
+        }
+
+        .icon-xinghui-huijing::after {
+            content: '🔥';
+            font-size: 22px;
+        }
+
+        /* Vidu AI 图标 - 黑底蓝白色图标 */
+        .icon-vidu-ai {
+            background-color: #000000;
+            color: #00bfff;
+            position: relative;
+        }
+
+        .icon-vidu-ai::after {
+            content: '🎬';
+            font-size: 22px;
+            filter: brightness(0) invert(1);
+        }
+
+        /* 腾讯混元 AI 视频图标 - 蓝色渐变 */
+        .icon-tencent-hunyuan-video {
+            background: linear-gradient(135deg, #00a8ff, #0073e6);
+            position: relative;
+        }
+
+        .icon-tencent-hunyuan-video::after {
+            content: '🎥';
+            font-size: 22px;
+        }
+
+        /* 通义万相 视频图标 - 紫底白色图标 */
+        .icon-tongyi-wanxiang-video {
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            position: relative;
+        }
+
+        .icon-tongyi-wanxiang-video::after {
+            content: '🎬';
+            font-size: 22px;
+            filter: brightness(0) invert(1);
+        }
+
+        /* 追影图标 - 红色渐变 */
+        .icon-zhuiying {
+            background: linear-gradient(135deg, #dc2626, #b91c1c);
+            position: relative;
+        }
+
+        .icon-zhuiying::after {
+            content: '🎬';
+            font-size: 22px;
+        }
+
+        /* 阿里视频重绘图标 - 橙色渐变 */
+        .icon-ali-video-redraw {
+            background: linear-gradient(135deg, #ff9500, #ff6200);
+            position: relative;
+        }
+
+        .icon-ali-video-redraw::after {
+            content: '🎨';
+            font-size: 22px;
+        }
+
+        /* 智谱清影图标 - 绿色渐变 */
+        .icon-zhipu-qingying {
+            background: linear-gradient(135deg, #10b981, #059669);
+            position: relative;
+        }
+
+        .icon-zhipu-qingying::after {
+            content: '🎬';
+            font-size: 22px;
+        }
+
+        /* 即创图标 - 紫色渐变 */
+        .icon-jichuang {
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            position: relative;
+        }
+
+        .icon-jichuang::after {
+            content: '✨';
+            font-size: 22px;
+        }
+
+        /* Runway 图标 - 黑色渐变 */
+        .icon-runway {
+            background: linear-gradient(135deg, #000000, #374151);
+            position: relative;
+        }
+
+        .icon-runway::after {
+            content: '🎬';
+            font-size: 22px;
+            filter: brightness(0) invert(1);
+        }
+
+        /* Stable Video 图标 - 绿色渐变 */
+        .icon-stable-video {
+            background: linear-gradient(135deg, #10b981, #059669);
+            position: relative;
+        }
+
+        .icon-stable-video::after {
+            content: '🎥';
+            font-size: 22px;
+        }
+
+        /* 度加图标 - 蓝色渐变 */
+        .icon-dujia {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            position: relative;
+        }
+
+        .icon-dujia::after {
+            content: '🎬';
+            font-size: 22px;
+        }
+
+        /* 绘想图标 - 橙色渐变 */
+        .icon-huixiang {
+            background: linear-gradient(135deg, #fb923c, #f97316);
+            position: relative;
+        }
+
+        .icon-huixiang::after {
+            content: '🎨';
+            font-size: 22px;
+        }
+
+        /* SEKO 图标 - 黑底白色线条 */
+        .icon-seko {
+            background-color: #000000;
+            color: #ffffff;
+            position: relative;
+        }
+
+        .icon-seko::after {
+            content: '🤖';
+            font-size: 22px;
+            filter: brightness(0) invert(1);
+        }
+
+        /* AI 音频工具图标样式 */
+        /* Suno 中文站图标 - 橙色渐变 */
+        .icon-suno-cn {
+            background: linear-gradient(135deg, #ff6b35, #f7931e);
+            position: relative;
+        }
+
+        .icon-suno-cn::after {
+            content: '🎵';
+            font-size: 22px;
+            filter: brightness(0) invert(1);
+        }
+
+        /* 网易天音图标 - 蓝色渐变 */
+        .icon-netease-tianyin {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            position: relative;
+        }
+
+        .icon-netease-tianyin::after {
+            content: '🎼';
+            font-size: 22px;
+            filter: brightness(0) invert(1);
+        }
+
+        /* 海绵音乐图标 - 粉色渐变 */
+        .icon-haimian-music {
+            background: linear-gradient(135deg, #ec4899, #db2777);
+            position: relative;
+        }
+
+        .icon-haimian-music::after {
+            content: '🧽';
+            font-size: 22px;
+            filter: brightness(0) invert(1);
+        }
+
+        /* 音虫图标 - 绿色渐变 */
+        .icon-yinchong {
+            background: linear-gradient(135deg, #10b981, #059669);
+            position: relative;
+        }
+
+        .icon-yinchong::after {
+            content: '🐛';
+            font-size: 22px;
+            filter: brightness(0) invert(1);
+        }
+
+        /* 海螺语音图标 - 黑底粉紫渐变 */
+        .icon-hailuo-voice {
+            background: linear-gradient(135deg, #000000, #8b5cf6);
+            position: relative;
+        }
+
+        .icon-hailuo-voice::after {
+            content: '🐚';
+            font-size: 22px;
+        }
+
+        /* 声音克隆图标 - 紫色渐变 */
+        .icon-sound-clone {
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            position: relative;
+        }
+
+        .icon-sound-clone::after {
+            content: '🎤';
+            font-size: 22px;
+            filter: brightness(0) invert(1);
+        }
+
+        /* 魔音工坊图标 - 深紫色渐变 */
+        .icon-moyin-gongfang {
+            background: linear-gradient(135deg, #6366f1, #4f46e5);
+            position: relative;
+        }
+
+        .icon-moyin-gongfang::after {
+            content: '🎛️';
+            font-size: 22px;
+            filter: brightness(0) invert(1);
+        }
+
+        /* 智声云配图标 - 橙色渐变 */
+        .icon-zhisheng-yunpei {
+            background: linear-gradient(135deg, #f97316, #ea580c);
+            position: relative;
+        }
+
+        .icon-zhisheng-yunpei::after {
+            content: '☁️';
+            font-size: 22px;
+            filter: brightness(0) invert(1);
+        }
+
+        /* 音剪图标 - 蓝绿色渐变 */
+        .icon-yinjian {
+            background: linear-gradient(135deg, #06b6d4, #0891b2);
+            position: relative;
+        }
+
+        .icon-yinjian::after {
+            content: '✂️';
+            font-size: 22px;
+            filter: brightness(0) invert(1);
+        }
+
+        /* 海豚AI图标 - 蓝色渐变 */
+        .icon-haitun-ai {
+            background: linear-gradient(135deg, #0ea5e9, #0284c7);
+            position: relative;
+        }
+
+        .icon-haitun-ai::after {
+            content: '🐬';
+            font-size: 22px;
+            filter: brightness(0) invert(1);
+        }
+
+        /* 琅琅配音图标 - 橙色火焰 */
+        .icon-langlang-peiying {
+            background: linear-gradient(135deg, #ff6b35, #dc2626);
+            position: relative;
+        }
+
+        .icon-langlang-peiying::after {
+            content: '🔥';
+            font-size: 22px;
+        }
+
+        /* 即创音频图标 - 多彩渐变 */
+        .icon-jichuang-audio {
+            background: linear-gradient(135deg, #a855f7, #3b82f6);
+            position: relative;
+        }
+
+        .icon-jichuang-audio::after {
+            content: '🚀';
+            font-size: 22px;
+            filter: brightness(0) invert(1);
+        }
+
+        /* Mureka图标 - 紫色渐变 */
+        .icon-mureka {
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            position: relative;
+        }
+
+        .icon-mureka::after {
+            content: '🎻';
+            font-size: 22px;
+            filter: brightness(0) invert(1);
+        }
+
+        /* fish图标 - 蓝绿色渐变 */
+        .icon-fish {
+            background: linear-gradient(135deg, #06b6d4, #14b8a6);
+            position: relative;
+        }
+
+        .icon-fish::after {
+            content: '🐟';
+            font-size: 22px;
+            filter: brightness(0) invert(1);
+        }
+
+        /* weights图标 - 橙色渐变 */
+        .icon-weights {
+            background: linear-gradient(135deg, #f97316, #fb923c);
+            position: relative;
+        }
+
+        .icon-weights::after {
+            content: '⚖️';
+            font-size: 22px;
+            filter: brightness(0) invert(1);
+        }
+
+        /* 空卡片图标 */
+        .icon-empty-audio {
+            background: #f3f4f6;
+            border: 2px dashed #d1d5db;
+            position: relative;
+        }
+
+        .icon-empty-audio::after {
+            content: '';
+        }
+
+        /* AI 漫画工具图标样式 */
+        /* Jimeng AI 图标 - 腾讯蓝 */
+        .icon-jimeng-ai {
+            background: linear-gradient(135deg, #1e40af, #1e3a8a);
+            position: relative;
+        }
+
+        .icon-jimeng-ai::after {
+            content: '🎭';
+            font-size: 22px;
+            filter: brightness(0) invert(1);
+        }
+
+        /* Yijian AI 图标 - 绿色渐变 */
+        .icon-yijian-ai {
+            background: linear-gradient(135deg, #10b981, #059669);
+            position: relative;
+        }
+
+        .icon-yijian-ai::after {
+            content: '⚡';
+            font-size: 22px;
+            filter: brightness(0) invert(1);
+        }
+
+        /* Picacomic 图标 - 紫色渐变 */
+        .icon-picacomic {
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            position: relative;
+        }
+
+        .icon-picacomic::after {
+            content: '📚';
+            font-size: 22px;
+            filter: brightness(0) invert(1);
+        }
+
+        /* Comic AI 图标 - 橙色渐变 */
+        .icon-comic-ai {
+            background: linear-gradient(135deg, #f97316, #ea580c);
+            position: relative;
+        }
+
+        .icon-comic-ai::after {
+            content: '💭';
+            font-size: 22px;
+            filter: brightness(0) invert(1);
+        }
+
+        /* NovelAI 图标 - 蓝紫色渐变 */
+        .icon-novelai {
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            position: relative;
+        }
+
+        .icon-novelai::after {
+            content: '✍️';
+            font-size: 22px;
+            filter: brightness(0) invert(1);
+        }
+
+        /* Waifu2x 图标 - 粉色渐变 */
+        .icon-waifu2x {
+            background: linear-gradient(135deg, #ec4899, #db2777);
+            position: relative;
+        }
+
+        .icon-waifu2x::after {
+            content: '🔍';
+            font-size: 22px;
+            filter: brightness(0) invert(1);
+        }
+
+        /* Getimg 图标 - 青色渐变 */
+        .icon-getimg {
+            background: linear-gradient(135deg, #06b6d4, #0891b2);
+            position: relative;
+        }
+
+        .icon-getimg::after {
+            content: '🖼️';
+            font-size: 22px;
+            filter: brightness(0) invert(1);
+        }
+
+        /* Artbreeder 图标 - 彩虹渐变 */
+        .icon-artbreeder {
+            background: linear-gradient(135deg, #f97316, #eab308, #10b981);
+            position: relative;
+        }
+
+        .icon-artbreeder::after {
+            content: '🎨';
+            font-size: 22px;
+            filter: brightness(0) invert(1);
+        }
+
+        /* DeepAI 漫画图标 - 深蓝色渐变 */
+        .icon-deepai-comic {
+            background: linear-gradient(135deg, #1f2937, #374151);
+            position: relative;
+        }
+
+        .icon-deepai-comic::after {
+            content: '🤖';
+            font-size: 22px;
+        }
+
+        /* Fotor 漫画图标 - 黄色渐变 */
+        .icon-fotor-comic {
+            background: linear-gradient(135deg, #eab308, #ca8a04);
+            position: relative;
+        }
+
+        .icon-fotor-comic::after {
+            content: '📷';
+            font-size: 22px;
+            filter: brightness(0) invert(1);
+        }
+
+        /* NightCafe 图标 - 深紫色渐变 */
+        .icon-nightcafe {
+            background: linear-gradient(135deg, #581c87, #6b21a8);
+            position: relative;
+        }
+
+        .icon-nightcafe::after {
+            content: '🌃';
+            font-size: 22px;
+            filter: brightness(0) invert(1);
+        }
+
+        /* StarryAI 图标 - 星空渐变 */
+        .icon-starryai {
+            background: linear-gradient(135deg, #1e1b4b, #312e81);
+            position: relative;
+        }
+
+        .icon-starryai::after {
+            content: '⭐';
+            font-size: 22px;
+        }
+
+        /* 响应式布局 - AI 工具卡片 */
+        @media (min-width: 768px) and (max-width: 1199px) {
+            .ai-tools-grid,
+            .ai-art-tools-grid,
+            .ai-art-tools-expanded-grid,
+            .ai-video-tools-grid {
+                grid-template-columns: repeat(3, 1fr);
+                max-width: 900px;
+            }
+
+            .ai-audio-tools-grid {
+                grid-template-columns: repeat(3, 1fr);
+                max-width: 900px;
+            }
+
+            .ai-comic-tools-grid {
+                grid-template-columns: repeat(3, 1fr);
+                max-width: 900px;
+            }
+        }
+
+        @media (max-width: 767px) {
+            .ai-tools-grid,
+            .ai-art-tools-grid,
+            .ai-art-tools-expanded-grid,
+            .ai-video-tools-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+                padding: 0 16px;
+            }
+
+            .ai-audio-tools-grid,
+            .ai-comic-tools-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+                padding: 0 16px;
+            }
+
+            .ai-tool-card {
+                height: auto;
+                min-height: 80px;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- 移动端菜单按钮 -->
+    <button class="mobile-menu-btn fixed top-4 left-4 z-50 bg-white p-3 rounded-lg shadow-lg md:hidden" onclick="toggleSidebar()">
+        <i class="fas fa-bars text-gray-700"></i>
+    </button>
+
+    <div class="min-h-screen flex bg-gray-50">
+        <!-- 左侧导航栏 -->
+        <aside class="sidebar w-[220px] bg-white fixed left-0 top-0 h-full z-40 flex flex-col border-r border-gray-200 shadow-sm">
+            <!-- 品牌标识 -->
+            <div class="p-6 flex flex-col items-center">
+                <!-- 品牌图标 - SVG渐变 -->
+                <div class="w-[60px] h-[60px] mb-4">
+                    <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <!-- 流动感渐变曲线 - 蓝紫渐变 -->
+                        <defs>
+                            <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#3B82F6;stop-opacity:1" />
+                                <stop offset="50%" style="stop-color:#8B5CF6;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#06B6D4;stop-opacity:1" />
+                            </linearGradient>
+                            <linearGradient id="grad2" x1="100%" y1="0%" x2="0%" y2="100%">
+                                <stop offset="0%" style="stop-color:#06B6D4;stop-opacity:1" />
+                                <stop offset="50%" style="stop-color:#8B5CF6;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#3B82F6;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+
+                        <!-- 交错的流动感曲线 -->
+                        <path d="M10 20 Q25 10, 40 20 T50 30" stroke="url(#grad1)" stroke-width="4" fill="none" opacity="0.9"/>
+                        <path d="M15 35 Q30 25, 45 35 T55 45" stroke="url(#grad2)" stroke-width="4" fill="none" opacity="0.8"/>
+                        <path d="M8 40 Q23 30, 38 40 T48 50" stroke="url(#grad1)" stroke-width="3" fill="none" opacity="0.7"/>
+
+                        <!-- 抽象几何形状 -->
+                        <circle cx="20" cy="25" r="3" fill="url(#grad1)"/>
+                        <circle cx="35" cy="35" r="4" fill="url(#grad2)"/>
+                        <circle cx="45" cy="20" r="2.5" fill="url(#grad1)"/>
+                    </svg>
+                </div>
+
+                <!-- 品牌名称 -->
+                <h1 class="text-[20px] font-bold text-black mb-1">晨曦 AI</h1>
+                <!-- 标语 -->
+                <p class="text-[12px] text-gray-500">AIGC 行业领跑者</p>
+            </div>
+
+            <!-- 导航菜单 - 现代SAAS风格 -->
+            <nav class="flex-1 px-3 py-4" style="margin-top: 20px;">
+                <ul class="space-y-1">
+                    <li>
+                        <a href="#qa" class="nav-item group flex items-center px-3 py-2.5 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-all duration-200 ease-in-out" onclick="scrollToSection('qa'); return false;">
+                            <!-- AI 问答图标 -->
+                            <div class="w-5 h-5 mr-3 flex items-center justify-center">
+                                <svg class="w-[18px] h-[18px] transition-colors duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                                </svg>
+                            </div>
+                            <span class="text-sm font-medium">AI 问答</span>
+                            <div class="ml-auto opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                </svg>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#art" class="nav-item group flex items-center px-3 py-2.5 rounded-lg bg-blue-50 text-blue-600 transition-all duration-200 ease-in-out" onclick="scrollToSection('art'); return false;">
+                            <!-- AI 绘画图标 -->
+                            <div class="w-5 h-5 mr-3 flex items-center justify-center">
+                                <svg class="w-[18px] h-[18px] transition-colors duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                                </svg>
+                            </div>
+                            <span class="text-sm font-medium">AI 绘画</span>
+                            <div class="ml-auto">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                </svg>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#video" class="nav-item group flex items-center px-3 py-2.5 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-all duration-200 ease-in-out" onclick="scrollToSection('video'); return false;">
+                            <!-- AI 视频图标 -->
+                            <div class="w-5 h-5 mr-3 flex items-center justify-center">
+                                <svg class="w-[18px] h-[18px] transition-colors duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                                </svg>
+                            </div>
+                            <span class="text-sm font-medium">AI 视频</span>
+                            <div class="ml-auto opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                </svg>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#audio" class="nav-item group flex items-center px-3 py-2.5 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-all duration-200 ease-in-out" onclick="scrollToSection('audio'); return false;">
+                            <!-- AI 音频图标 -->
+                            <div class="w-5 h-5 mr-3 flex items-center justify-center">
+                                <svg class="w-[18px] h-[18px] transition-colors duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path>
+                                </svg>
+                            </div>
+                            <span class="text-sm font-medium">AI 音频</span>
+                            <div class="ml-auto opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                </svg>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#comic" class="nav-item group flex items-center px-3 py-2.5 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-all duration-200 ease-in-out" onclick="scrollToSection('comic'); return false;">
+                            <!-- AI 漫画图标 -->
+                            <div class="w-5 h-5 mr-3 flex items-center justify-center">
+                                <svg class="w-[18px] h-[18px] transition-colors duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                                    <circle cx="9" cy="9" r="1" fill="currentColor"/>
+                                    <circle cx="15" cy="9" r="1" fill="currentColor"/>
+                                </svg>
+                            </div>
+                            <span class="text-sm font-medium">AI 漫画</span>
+                            <div class="ml-auto opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                </svg>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#office" class="nav-item group flex items-center px-3 py-2.5 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-all duration-200 ease-in-out" onclick="scrollToSection('office'); return false;">
+                            <!-- AI 办公图标 -->
+                            <div class="w-5 h-5 mr-3 flex items-center justify-center">
+                                <svg class="w-[18px] h-[18px] transition-colors duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path>
+                                </svg>
+                            </div>
+                            <span class="text-sm font-medium">AI 办公</span>
+                            <div class="ml-auto opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                </svg>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- 垂直分隔线 -->
+        <div class="w-px bg-gray-200 fixed left-[220px] top-0 h-full z-30"></div>
+
+        <!-- 右侧内容区 -->
+        <main class="flex-1 ml-[220px] overflow-y-auto text-left" id="main-content">
+            <!-- 顶部横幅 -->
+            <section id="banner" class="banner-container relative overflow-hidden">
+                <!-- 深色调沙丘山脉背景 -->
+                <div class="banner-background absolute inset-0">
+                    <!-- 深色调沙丘山脉渐变背景 -->
+                    <div class="absolute inset-0 bg-gradient-to-br from-gray-900 via-gray-800 to-slate-900"></div>
+
+                    <!-- 沙丘山脉纹理 -->
+                    <svg class="absolute inset-0 w-full h-full" viewBox="0 0 1200 225" preserveAspectRatio="none">
+                        <defs>
+                            <!-- 深色沙丘渐变 -->
+                            <linearGradient id="mountain1" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#374151;stop-opacity:0.9" />
+                                <stop offset="30%" style="stop-color:#4b5563;stop-opacity:0.7" />
+                                <stop offset="70%" style="stop-color:#6b7280;stop-opacity:0.5" />
+                                <stop offset="100%" style="stop-color:#9ca3af;stop-opacity:0.3" />
+                            </linearGradient>
+                            <linearGradient id="mountain2" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#1f2937;stop-opacity:0.8" />
+                                <stop offset="50%" style="stop-color:#374151;stop-opacity:0.6" />
+                                <stop offset="100%" style="stop-color:#4b5563;stop-opacity:0.4" />
+                            </linearGradient>
+                            <linearGradient id="mountain3" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#111827;stop-opacity:0.7" />
+                                <stop offset="100%" style="stop-color:#1f2937;stop-opacity:0.5" />
+                            </linearGradient>
+                        </defs>
+
+                        <!-- 远山层叠 -->
+                        <path d="M0,100 Q150,40 300,65 T600,50 Q900,35 1200,80 L1200,225 L0,225 Z"
+                              fill="url(#mountain1)" opacity="0.7"/>
+                        <path d="M0,140 Q200,80 400,110 T800,90 Q1000,75 1200,120 L1200,225 L0,225 Z"
+                              fill="url(#mountain2)" opacity="0.8"/>
+                        <path d="M0,180 Q250,120 500,150 T1000,140 Q1100,135 1200,160 L1200,225 L0,225 Z"
+                              fill="url(#mountain3)" opacity="0.9"/>
+
+                        <!-- 沙丘纹理线条 -->
+                        <path d="M0,120 Q100,115 200,118 T400,116 T600,119 T800,117 T1000,120 T1200,118"
+                              stroke="#374151" stroke-width="1" fill="none" opacity="0.3"/>
+                        <path d="M0,160 Q150,155 300,158 T600,156 T900,159 T1200,157"
+                              stroke="#4b5563" stroke-width="1" fill="none" opacity="0.2"/>
+                    </svg>
+                </div>
+
+                <!-- 内容区域 -->
+                <div class="relative z-10 h-[225px] px-[30px] w-full">
+                    <div class="h-full flex flex-col py-8">
+                        <!-- 主标题 - 靠近顶部，左对齐 -->
+                        <h2 class="text-[18px] font-bold text-white mb-[6px] leading-tight text-left">
+                            晨曦AI工具库
+                        </h2>
+
+                        <!-- 副标题区域 - 左对齐，主标题略高于副标题 -->
+                        <div class="flex items-start flex-wrap gap-4">
+                            <!-- 左侧文字区域 -->
+                            <div class="flex items-center gap-2 min-w-0 flex-1">
+                                <p class="text-[18px] font-normal text-white leading-relaxed text-left">
+                                    扫码加好友 可领取AI编程资料
+                                </p>
+                                <span class="text-yellow-400 text-[20px] flex-shrink-0">👍</span>
+                                <!-- 二维码紧跟在大拇指右边，顶部与晨曦AI工具库齐平 -->
+                                <div class="qr-container flex-shrink-0 relative" style="top: -26px;">
+                                    <div class="w-[100px] h-[100px] bg-white border-2 border-white rounded-lg flex items-center justify-center relative overflow-hidden shadow-lg">
+                                        <!-- 真实二维码图片 -->
+                                        <img src="images/code.jpg"
+                                             alt="扫码加入"
+                                             class="w-[80px] h-[80px] object-contain"
+                                             loading="lazy">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- AI 问答板块 -->
+            <section id="qa" class="p-6 md:p-8 bg-white">
+                <div class="w-full">
+                    <!-- 标题区域 -->
+                    <div class="flex items-center mb-5">
+                        <div class="w-6 h-6 mr-2">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-700">
+                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                            </svg>
+                        </div>
+                        <h2 class="text-xl font-semibold text-gray-900">AI 问答</h2>
+                    </div>
+
+                    <!-- 工具卡片网格 -->
+                    <div class="ai-tools-grid">
+                        <!-- 第1行 -->
+                        <!-- DeepSeek -->
+                        <div class="ai-tool-card flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 rounded-lg" onclick="window.open('https://chat.deepseek.com', '_blank')">
+                            <div class="ai-tool-icon icon-deepseek mr-3"></div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-900">DeepSeek</h3>
+                                <p class="text-sm text-gray-500">国产最强的深度思考大模型</p>
+                            </div>
+                        </div>
+
+                        <!-- Kimi -->
+                        <div class="ai-tool-card flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 rounded-lg" onclick="window.open('https://kimi.moonshot.cn', '_blank')">
+                            <div class="ai-tool-icon icon-kimi mr-3">K</div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-900">Kimi</h3>
+                                <p class="text-sm text-gray-500">长文本和深度思考 AI 大模型</p>
+                            </div>
+                        </div>
+
+                        <!-- 豆包 -->
+                        <div class="ai-tool-card flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 rounded-lg" onclick="window.open('https://www.doubao.com', '_blank')">
+                            <div class="ai-tool-icon icon-doubao mr-3"></div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-900">豆包</h3>
+                                <p class="text-sm text-gray-500">字节推出的 AI 全能助手</p>
+                            </div>
+                        </div>
+
+                        <!-- 腾讯元宝 -->
+                        <div class="ai-tool-card flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 rounded-lg" onclick="window.open('https://yuanbao.tencent.com', '_blank')">
+                            <div class="ai-tool-icon icon-tencent mr-3"></div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-900">腾讯元宝</h3>
+                                <p class="text-sm text-gray-500">腾讯推出的 AI 全能助手</p>
+                            </div>
+                        </div>
+
+                        <!-- 第2行 -->
+                        <!-- 通义千问 -->
+                        <div class="ai-tool-card flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 rounded-lg" onclick="window.open('https://qianwen.aliyun.com', '_blank')">
+                            <div class="ai-tool-icon icon-tongyi mr-3"></div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-900">通义千问</h3>
+                                <p class="text-sm text-gray-500">阿里推出的 AI 全能助手</p>
+                            </div>
+                        </div>
+
+                        <!-- 智谱清言 -->
+                        <div class="ai-tool-card flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 rounded-lg" onclick="window.open('https://chatglm.cn', '_blank')">
+                            <div class="ai-tool-icon icon-zhipu mr-3"></div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-900">智谱清言</h3>
+                                <p class="text-sm text-gray-500">智谱推出的 AI 全能助手</p>
+                            </div>
+                        </div>
+
+                        <!-- 文心一言 -->
+                        <div class="ai-tool-card flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 rounded-lg" onclick="window.open('https://yiyan.baidu.com', '_blank')">
+                            <div class="ai-tool-icon icon-wenxin mr-3"></div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-900">文心一言</h3>
+                                <p class="text-sm text-gray-500">百度推出的 AI 全能助手</p>
+                            </div>
+                        </div>
+
+                        <!-- 讯飞星火 -->
+                        <div class="ai-tool-card flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 rounded-lg" onclick="window.open('https://xinghuo.xfyun.cn', '_blank')">
+                            <div class="ai-tool-icon icon-xunfei mr-3"></div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-900">讯飞星火</h3>
+                                <p class="text-sm text-gray-500">科大讯飞推出的 AI 全能助手</p>
+                            </div>
+                        </div>
+
+                        <!-- 第3行 -->
+                        <!-- 纳米AI -->
+                        <div class="ai-tool-card flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 rounded-lg" onclick="window.open('https://ai.360.cn', '_blank')">
+                            <div class="ai-tool-icon icon-nami mr-3"></div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-900">纳米 AI</h3>
+                                <p class="text-sm text-gray-500">360 推出的 AI 大模型集合工具</p>
+                            </div>
+                        </div>
+
+                        <!-- 秘塔AI -->
+                        <div class="ai-tool-card flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 rounded-lg" onclick="window.open('https://metaso.cn', '_blank')">
+                            <div class="ai-tool-icon icon-mita mr-3"></div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-900">秘塔 AI</h3>
+                                <p class="text-sm text-gray-500">没有广告的 AI 搜索引擎</p>
+                            </div>
+                        </div>
+
+                        <!-- 海螺AI -->
+                        <div class="ai-tool-card flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 rounded-lg" onclick="window.open('https://hailuoai.com', '_blank')">
+                            <div class="ai-tool-icon icon-hailuo mr-3"></div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-900">海螺 AI</h3>
+                                <p class="text-sm text-gray-500">Minimax 推出的 AI 全能助手</p>
+                            </div>
+                        </div>
+
+                        <!-- 阶跃AI -->
+                        <div class="ai-tool-card flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 rounded-lg" onclick="window.open('https://stepfun.com', '_blank')">
+                            <div class="ai-tool-icon icon-jieyue mr-3"></div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-900">阶跃 AI</h3>
+                                <p class="text-sm text-gray-500">阶跃星辰推出的 AI 全能助手</p>
+                            </div>
+                        </div>
+
+                        <!-- 第4行 -->
+                        <!-- ChatGPT -->
+                        <div class="ai-tool-card flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 rounded-lg" onclick="window.open('https://chatgpt.com', '_blank')">
+                            <div class="ai-tool-icon icon-chatgpt mr-3"></div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-900">ChatGPT</h3>
+                                <p class="text-sm text-gray-500">国外 OpenAI 推出的 AI 大模型</p>
+                            </div>
+                        </div>
+
+                        <!-- Gemini -->
+                        <div class="ai-tool-card flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 rounded-lg" onclick="window.open('https://gemini.google.com', '_blank')">
+                            <div class="ai-tool-icon icon-gemini mr-3"></div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-900">Gemini</h3>
+                                <p class="text-sm text-gray-500">国外谷歌推出的大语言模型</p>
+                            </div>
+                        </div>
+
+                        <!-- Claude -->
+                        <div class="ai-tool-card flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 rounded-lg" onclick="window.open('https://claude.ai', '_blank')">
+                            <div class="ai-tool-icon icon-claude mr-3"></div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-900">Claude</h3>
+                                <p class="text-sm text-gray-500">国外热门长文本大语言模型</p>
+                            </div>
+                        </div>
+
+                        <!-- Grok -->
+                        <div class="ai-tool-card flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 rounded-lg" onclick="window.open('https://grok.x.ai', '_blank')">
+                            <div class="ai-tool-icon icon-grok mr-3"></div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-900">Grok</h3>
+                                <p class="text-sm text-gray-500">国外马斯克推出的大语言模型</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- AI 绘画板块 -->
+            <section id="art" class="p-6 md:p-8 bg-gray-50">
+                <div class="w-full">
+                    <!-- 标题区域 -->
+                    <div class="flex items-center mb-5">
+                        <div class="w-6 h-6 mr-2">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-700">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+                            </svg>
+                        </div>
+                        <h2 class="text-xl font-semibold text-gray-900">AI 绘画</h2>
+                    </div>
+
+                    <!-- 工具卡片网格 -->
+                    <div class="ai-art-tools-expanded-grid">
+                        <!-- 第1行 -->
+                        <!-- 即梦 AI -->
+                        <div class="ai-tool-card flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 rounded-lg" onclick="window.open('https://jimeng.jianying.com', '_blank')">
+                            <div class="ai-tool-icon icon-jimeng-ai mr-3"></div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-900">即梦 AI</h3>
+                                <p class="text-sm text-gray-500">抖音旗下 AI 图像视频创作工具</p>
+                            </div>
+                        </div>
+
+                        <!-- 可灵 AI -->
+                        <div class="ai-tool-card flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 rounded-lg" onclick="window.open('https://kling.kuaishou.com', '_blank')">
+                            <div class="ai-tool-icon icon-keling-ai mr-3"></div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-900">可灵 AI</h3>
+                                <p class="text-sm text-gray-500">快手旗下 AI 图像视频创作工具</p>
+                            </div>
+                        </div>
+
+                        <!-- 商汤秒画 -->
+                        <div class="ai-tool-card flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 rounded-lg" onclick="window.open('https://mhaus.sensetime.com', '_blank')">
+                            <div class="ai-tool-icon icon-shangtang-miaohua mr-3"></div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-900">商汤秒画</h3>
+                                <p class="text-sm text-gray-500">免费的 AI 图片生成平台</p>
+                            </div>
+                        </div>
+
+                        <!-- 通义万相 -->
+                        <div class="ai-tool-card flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 rounded-lg" onclick="window.open('https://tongyi.aliyun.com/wanxiang', '_blank')">
+                            <div class="ai-tool-icon icon-tongyi-wanxiang-2 mr-3"></div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-900">通义万相</h3>
+                                <p class="text-sm text-gray-500">阿里旗下 AI 创意作画平台</p>
+                            </div>
+                        </div>
+
+                        <!-- 第2行 -->
+                        <!-- MJ 绘画中文站 -->
+                        <div class="ai-tool-card flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 rounded-lg" onclick="window.open('https://www.midjourney.com', '_blank')">
+                            <div class="ai-tool-icon icon-mj-painting mr-3"></div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-900">MJ 绘画中文站</h3>
+                                <p class="text-sm text-gray-500">集成多个国外主流 AI 绘画工具</p>
+                            </div>
+                        </div>
+
+                        <!-- LM arena -->
+                        <div class="ai-tool-card flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 rounded-lg" onclick="window.open('https://lmarena.ai', '_blank')">
+                            <div class="ai-tool-icon icon-lm-arena mr-3"></div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-900">LM arena</h3>
+                                <p class="text-sm text-gray-500">无描述</p>
+                            </div>
+                        </div>
+
+                        <!-- 无界 AI -->
+                        <div class="ai-tool-card flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 rounded-lg" onclick="window.open('https://wujie.art', '_blank')">
+                            <div class="ai-tool-icon icon-wujie-ai mr-3"></div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-900">无界 AI</h3>
+                                <p class="text-sm text-gray-500">一款可以反推提示词的 AI 绘画工具</p>
+                            </div>
+                        </div>
+
+                        <!-- 腾讯混元 3D -->
+                        <div class="ai-tool-card flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 rounded-lg" onclick="window.open('https://hunyuan.tencent.com', '_blank')">
+                            <div class="ai-tool-icon icon-tencent-hunyuan-3d mr-3"></div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-900">腾讯混元 3D</h3>
+                                <p class="text-sm text-gray-500">一站式 3D 内容 AI 创作平台</p>
+                            </div>
+                        </div>
+
+                        <!-- 第3行 -->
+                        <!-- LiblibAI -->
+                        <div class="ai-tool-card flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 rounded-lg" onclick="window.open('https://liblib.ai', '_blank')">
+                            <div class="ai-tool-icon icon-liblib-ai mr-3"></div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-900">LiblibAI</h3>
+                                <p class="text-sm text-gray-500">无描述</p>
+                            </div>
+                        </div>
+
+                        <!-- 吐司 AI -->
+                        <div class="ai-tool-card flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 rounded-lg" onclick="window.open('https://tusi.art', '_blank')">
+                            <div class="ai-tool-icon icon-tuosi-ai mr-3"></div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-900">吐司 AI</h3>
+                                <p class="text-sm text-gray-500">AI 绘画模型社区和在线绘图平台</p>
+                            </div>
+                        </div>
+
+                        <!-- 堆友 AI -->
+                        <div class="ai-tool-card flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 rounded-lg" onclick="window.open('https://www.duiyou.ai', '_blank')">
+                            <div class="ai-tool-icon icon-duiyou-ai mr-3"></div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-900">堆友 AI</h3>
+                                <p class="text-sm text-gray-500">多风格 AI 绘画生成器</p>
+                            </div>
+                        </div>
+
+                        <!-- 海艺 AI -->
+                        <div class="ai-tool-card flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 rounded-lg" onclick="window.open('https://www.haiyi.ai', '_blank')">
+                            <div class="ai-tool-icon icon-haiyi-ai mr-3"></div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-900">海艺 AI</h3>
+                                <p class="text-sm text-gray-500">AI 绘画生成器，每日免费生成 150 张</p>
+                            </div>
+                        </div>
+
+                        <!-- 第4行 -->
+                        <!-- 神采 AI -->
+                        <div class="ai-tool-card flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 rounded-lg" onclick="window.open('https://www.shencai.ai', '_blank')">
+                            <div class="ai-tool-icon icon-shencai-ai mr-3"></div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-900">神采 AI</h3>
+                                <p class="text-sm text-gray-500">免费的 AI 图像生成器和编辑器</p>
+                            </div>
+                        </div>
+
+                        <!-- 星流 -->
+                        <div class="ai-tool-card flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 rounded-lg" onclick="window.open('https://xingliu.ai', '_blank')">
+                            <div class="ai-tool-icon icon-xingliu mr-3"></div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-900">星流</h3>
+                                <p class="text-sm text-gray-500">懂美学，控制准，尽享无边画布</p>
+                            </div>
+                        </div>
+
+                        <!-- 奇域 -->
+                        <div class="ai-tool-card flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 rounded-lg" onclick="window.open('https://qiyu.art', '_blank')">
+                            <div class="ai-tool-icon icon-qiyu mr-3"></div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-900">奇域</h3>
+                                <p class="text-sm text-gray-500">中式审美国风 AI 绘画创作平台</p>
+                            </div>
+                        </div>
+
+                        <!-- 美图设计室 -->
+                        <div class="ai-tool-card flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 rounded-lg" onclick="window.open('https://design.meitu.com', '_blank')">
+                            <div class="ai-tool-icon icon-meitu-design mr-3"></div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-900">美图设计室</h3>
+                                <p class="text-sm text-gray-500">AI 图像创作和设计平台</p>
+                            </div>
+                        </div>
+
+                        <!-- 第5行 -->
+                        <!-- WHEE -->
+                        <div class="ai-tool-card flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 rounded-lg" onclick="window.open('https://whee.meitu.com', '_blank')">
+                            <div class="ai-tool-icon icon-whee mr-3"></div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-900">WHEE</h3>
+                                <p class="text-sm text-gray-500">美图推出的高品质 AI 素材生成器</p>
+                            </div>
+                        </div>
+
+                        <!-- 搞定设计 -->
+                        <div class="ai-tool-card flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 rounded-lg" onclick="window.open('https://www.gaoding.com', '_blank')">
+                            <div class="ai-tool-icon icon-gaoding-design mr-3"></div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-900">搞定设计</h3>
+                                <p class="text-sm text-gray-500">在线平面设计 AI 工具</p>
+                            </div>
+                        </div>
+
+                        <!-- 美间商拍 -->
+                        <div class="ai-tool-card flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 rounded-lg" onclick="window.open('https://www.meijian.com', '_blank')">
+                            <div class="ai-tool-icon icon-meijian-shangpai mr-3"></div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-900">美间商拍</h3>
+                                <p class="text-sm text-gray-500">一键生成高质量 AI 商品图</p>
+                            </div>
+                        </div>
+
+                        <!-- PhotoStudio AI -->
+                        <div class="ai-tool-card flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 rounded-lg" onclick="window.open('https://photostudio.ai', '_blank')">
+                            <div class="ai-tool-icon icon-photostudio-ai mr-3"></div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-900">PhotoStudio AI</h3>
+                                <p class="text-sm text-gray-500">高逼真的 AI 模特和商品图</p>
+                            </div>
+                        </div>
+
+                        <!-- 第6行 -->
+                        <!-- 可图 AI 试衣 -->
+                        <div class="ai-tool-card flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 rounded-lg" onclick="window.open('https://ketu.kuaishou.com', '_blank')">
+                            <div class="ai-tool-icon icon-keu-ai-shiyi mr-3"></div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-900">可图 AI 试衣</h3>
+                                <p class="text-sm text-gray-500">免费的 AI 换衣工具</p>
+                            </div>
+                        </div>
+
+                        <!-- 绘蛙 -->
+                        <div class="ai-tool-card flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 rounded-lg" onclick="window.open('https://www.huiwa.com', '_blank')">
+                            <div class="ai-tool-icon icon-huiwa mr-3"></div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-900">绘蛙</h3>
+                                <p class="text-sm text-gray-500">AI 电商图片处理工具</p>
+                            </div>
+                        </div>
+
+                        <!-- AI 设计工坊 -->
+                        <div class="ai-tool-card flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 rounded-lg" onclick="window.open('https://www.aidesign.work', '_blank')">
+                            <div class="ai-tool-icon icon-ai-design-workshop mr-3"></div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-900">AI 设计工坊</h3>
+                                <p class="text-sm text-gray-500">一站式学习 / 创作 / 分享 / 接单平台</p>
+                            </div>
+                        </div>
+
+                        <!-- 老照片修复 -->
+                        <div class="ai-tool-card flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 rounded-lg" onclick="window.open('https://www.oldphoto.com', '_blank')">
+                            <div class="ai-tool-icon icon-old-photo-restore mr-3"></div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-900">老照片修复</h3>
+                                <p class="text-sm text-gray-500">老照片修复和上色工具</p>
+                            </div>
+                        </div>
+
+                        <!-- 第7行 -->
+                        <!-- 一键抠图 -->
+                        <div class="ai-tool-card flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 rounded-lg" onclick="window.open('https://www.koutu.com', '_blank')">
+                            <div class="ai-tool-icon icon-one-click-koutu mr-3"></div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-900">一键抠图</h3>
+                                <p class="text-sm text-gray-500">抠图、换背景、图片压缩</p>
+                            </div>
+                        </div>
+
+                        <!-- 一键擦除 -->
+                        <div class="ai-tool-card flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 rounded-lg" onclick="window.open('https://www.erase.com', '_blank')">
+                            <div class="ai-tool-icon icon-one-click-erase mr-3"></div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-900">一键擦除</h3>
+                                <p class="text-sm text-gray-500">无需注册的免费图片擦除工具</p>
+                            </div>
+                        </div>
+
+                        <!-- ChatPS -->
+                        <div class="ai-tool-card flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 rounded-lg" onclick="window.open('https://www.chatps.com', '_blank')">
+                            <div class="ai-tool-icon icon-chatps mr-3"></div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-900">ChatPS</h3>
+                                <p class="text-sm text-gray-500">免费的聊天式在线绘图工具</p>
+                            </div>
+                        </div>
+
+                        <!-- 空卡片 -->
+                        <div class="ai-tool-card flex items-center opacity-50">
+                            <div class="ai-tool-icon icon-empty mr-3"></div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-400">待添加</h3>
+                                <p class="text-sm text-gray-400">暂无内容</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="video" class="p-6 md:p-8 bg-white">
+                <div class="w-full">
+                    <!-- 标题区域 -->
+                    <div class="flex items-center mb-5">
+                        <div class="w-6 h-6 mr-2">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-700">
+                                <polygon points="23 7 16 12 23 17 23 7"></polygon>
+                                <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
+                            </svg>
+                        </div>
+                        <h2 class="text-xl font-semibold text-gray-900">AI 视频</h2>
+                    </div>
+
+                    <!-- 工具卡片网格 -->
+                    <div class="ai-video-tools-grid">
+                        <!-- 第1行 -->
+                        <!-- 即梦 AI -->
+                        <div class="ai-tool-card flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 rounded-lg" onclick="window.open('https://jimeng.jianying.com', '_blank')">
+                            <div class="ai-tool-icon icon-jimeng-video mr-3"></div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-900">即梦 AI</h3>
+                                <p class="text-sm text-gray-500">抖音旗下免费 AI 绘画和视频生成工具</p>
+                            </div>
+                        </div>
+
+                        <!-- 可灵 AI -->
+                        <div class="ai-tool-card flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 rounded-lg" onclick="window.open('https://kling.kuaishou.com', '_blank')">
+                            <div class="ai-tool-icon icon-keling-video mr-3"></div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-900">可灵 AI</h3>
+                                <p class="text-sm text-gray-500">快手旗下 AI 图片 / 视频创作平台</p>
+                            </div>
+                        </div>
+
+                        <!-- 海螺视频 -->
+                        <div class="ai-tool-card flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 rounded-lg" onclick="window.open('https://hailuoai.com/video', '_blank')">
+                            <div class="ai-tool-icon icon-hailuo-video mr-3"></div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-900">海螺视频</h3>
+                                <p class="text-sm text-gray-500">海螺 AI 创意视频平台</p>
+                            </div>
+                        </div>
+
+                        <!-- 星火绘镜 -->
+                        <div class="ai-tool-card flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 rounded-lg" onclick="window.open('https://xinghuo.xfyun.cn/huijing', '_blank')">
+                            <div class="ai-tool-icon icon-xinghui-huijing mr-3"></div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-900">星火绘镜</h3>
+                                <p class="text-sm text-gray-500">科大讯飞推出的 AI 短视频创作平台</p>
+                            </div>
+                        </div>
+
+                        <!-- 第2行 -->
+                        <!-- Vidu AI -->
+                        <div class="ai-tool-card flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 rounded-lg" onclick="window.open('https://vidu.studio', '_blank')">
+                            <div class="ai-tool-icon icon-vidu-ai mr-3"></div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-900">Vidu AI</h3>
+                                <p class="text-sm text-gray-500">生成高质量的动漫 / 广告 / 影视内容</p>
+                            </div>
+                        </div>
+
+                        <!-- 腾讯混元 AI 视频 -->
+                        <div class="ai-tool-card flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 rounded-lg" onclick="window.open('https://hunyuan.tencent.com/video', '_blank')">
+                            <div class="ai-tool-icon icon-tencent-hunyuan-video mr-3"></div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-900">腾讯混元 AI 视频</h3>
+                                <p class="text-sm text-gray-500">腾讯旗下免费 AI 视频工具</p>
+                            </div>
+                        </div>
+
+                        <!-- 通义万相 -->
+                        <div class="ai-tool-card flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 rounded-lg" onclick="window.open('https://tongyi.aliyun.com/wanxiang/video', '_blank')">
+                            <div class="ai-tool-icon icon-tongyi-wanxiang-video mr-3"></div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-900">通义万相</h3>
+                                <p class="text-sm text-gray-500">阿里推出的免费 AI 视频生成工具</p>
+                            </div>
+                        </div>
+
+                        <!-- 追影 -->
+                        <div class="ai-tool-card flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 rounded-lg" onclick="window.open('https://zhuiying.com', '_blank')">
+                            <div class="ai-tool-icon icon-zhuiying mr-3"></div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-900">追影</h3>
+                                <p class="text-sm text-gray-500">追影 - 视频生成</p>
+                            </div>
+                        </div>
+
+                        <!-- 第3行 -->
+                        <!-- 阿里视频重绘 -->
+                        <div class="ai-tool-card flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 rounded-lg" onclick="window.open('https://tongyi.aliyun.com/video', '_blank')">
+                            <div class="ai-tool-icon icon-ali-video-redraw mr-3"></div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-900">阿里视频重绘</h3>
+                                <p class="text-sm text-gray-500">AI 人像视频多风格漫画</p>
+                            </div>
+                        </div>
+
+                        <!-- 智谱清影 -->
+                        <div class="ai-tool-card flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 rounded-lg" onclick="window.open('https://chatglm.cn/video', '_blank')">
+                            <div class="ai-tool-icon icon-zhipu-qingying mr-3"></div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-900">智谱清影</h3>
+                                <p class="text-sm text-gray-500">免费 AI 生成工具</p>
+                            </div>
+                        </div>
+
+                        <!-- 即创 -->
+                        <div class="ai-tool-card flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 rounded-lg" onclick="window.open('https://jichuang.com', '_blank')">
+                            <div class="ai-tool-icon icon-jichuang mr-3"></div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-900">即创</h3>
+                                <p class="text-sm text-gray-500">支持视频和直播创作</p>
+                            </div>
+                        </div>
+
+                        <!-- Runway -->
+                        <div class="ai-tool-card flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 rounded-lg" onclick="window.open('https://runwayml.com', '_blank')">
+                            <div class="ai-tool-icon icon-runway mr-3"></div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-900">Runway</h3>
+                                <p class="text-sm text-gray-500">国外 AI 视频生成工具元老</p>
+                            </div>
+                        </div>
+
+                        <!-- 第4行 -->
+                        <!-- Stable Video -->
+                        <div class="ai-tool-card flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 rounded-lg" onclick="window.open('https://www.stablevideo.com', '_blank')">
+                            <div class="ai-tool-icon icon-stable-video mr-3"></div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-900">Stable Video</h3>
+                                <p class="text-sm text-gray-500">Stability AI 上线的 AI 视频生成工具</p>
+                            </div>
+                        </div>
+
+                        <!-- 度加 -->
+                        <div class="ai-tool-card flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 rounded-lg" onclick="window.open('https://dujia.baidu.com', '_blank')">
+                            <div class="ai-tool-icon icon-dujia mr-3"></div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-900">度加</h3>
+                                <p class="text-sm text-gray-500">百度旗下门槛极低的 AI 视频创作工具</p>
+                            </div>
+                        </div>
+
+                        <!-- 绘想 -->
+                        <div class="ai-tool-card flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 rounded-lg" onclick="window.open('https://huixiang.baidu.com', '_blank')">
+                            <div class="ai-tool-icon icon-huixiang mr-3"></div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-900">绘想</h3>
+                                <p class="text-sm text-gray-500">百度旗下 AI 视频创作平台</p>
+                            </div>
+                        </div>
+
+                        <!-- SEKO -->
+                        <div class="ai-tool-card flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 rounded-lg" onclick="window.open('https://seko.sensetime.com', '_blank')">
+                            <div class="ai-tool-icon icon-seko mr-3"></div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-900">SEKO</h3>
+                                <p class="text-sm text-gray-500">商汤科技旗下 AI 视频创作智能体</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="audio" class="p-6 md:p-8 bg-gray-50">
+                <div class="w-full">
+                    <!-- 标题区域 -->
+                    <div class="flex items-center mb-5">
+                        <div class="w-6 h-6 mr-2">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-700">
+                                <path d="M9 18V5l12-2v13"></path>
+                                <circle cx="6" cy="18" r="3"></circle>
+                                <circle cx="18" cy="16" r="3"></circle>
+                            </svg>
+                        </div>
+                        <h2 class="text-xl font-semibold text-gray-900">AI 音频</h2>
+                    </div>
+
+                    <!-- 工具卡片网格 -->
+                    <div class="ai-audio-tools-grid">
+                        <!-- 第1行 -->
+                        <!-- Suno 中文站 -->
+                        <div class="ai-tool-card flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 rounded-lg" onclick="window.open('https://suno.com', '_blank')">
+                            <div class="ai-tool-icon icon-suno-cn mr-3"></div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-900">Suno 中文站</h3>
+                                <p class="text-sm text-gray-500">AI 音乐创作，Suno 的国产版</p>
+                            </div>
+                        </div>
+
+                        <!-- 网易天音 -->
+                        <div class="ai-tool-card flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 rounded-lg" onclick="window.open('https://tianyin.music.163.com', '_blank')">
+                            <div class="ai-tool-icon icon-netease-tianyin mr-3"></div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-900">网易天音</h3>
+                                <p class="text-sm text-gray-500">网易推出的一站式 AI 音乐创作工具</p>
+                            </div>
+                        </div>
+
+                        <!-- 海绵音乐 -->
+                        <div class="ai-tool-card flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 rounded-lg" onclick="window.open('https://haimian.bytedance.com', '_blank')">
+                            <div class="ai-tool-icon icon-haimian-music mr-3"></div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-900">海绵音乐</h3>
+                                <p class="text-sm text-gray-500">字节推出的免费 AI 音乐创作平台</p>
+                            </div>
+                        </div>
+
+                        <!-- 音虫官网 -->
+                        <div class="ai-tool-card flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 rounded-lg" onclick="window.open('https://www.yinchong.com', '_blank')">
+                            <div class="ai-tool-icon icon-yinchong mr-3"></div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-900">音虫官网</h3>
+                                <p class="text-sm text-gray-500">用于音乐编曲和录音的软件</p>
+                            </div>
+                        </div>
+
+                        <!-- 第2行 -->
+                        <!-- 海螺语音 -->
+                        <div class="ai-tool-card flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 rounded-lg" onclick="window.open('https://hailuoai.com/voice', '_blank')">
+                            <div class="ai-tool-icon icon-hailuo-voice mr-3"></div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-900">海螺语音</h3>
+                                <p class="text-sm text-gray-500">海螺 AI 推出的文本转语音功能</p>
+                            </div>
+                        </div>
+
+                        <!-- 声音克隆 -->
+                        <div class="ai-tool-card flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 rounded-lg" onclick="window.open('https://api.minimax.chat', '_blank')">
+                            <div class="ai-tool-icon icon-sound-clone mr-3"></div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-900">声音克隆</h3>
+                                <p class="text-sm text-gray-500">Minimax 海外版，声音克隆功能</p>
+                            </div>
+                        </div>
+
+                        <!-- 魔音工坊 -->
+                        <div class="ai-tool-card flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 rounded-lg" onclick="window.open('https://moyin.com', '_blank')">
+                            <div class="ai-tool-icon icon-moyin-gongfang mr-3"></div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-900">魔音工坊</h3>
+                                <p class="text-sm text-gray-500">在线将文字转成语音的配音产品</p>
+                            </div>
+                        </div>
+
+                        <!-- 智声云配 -->
+                        <div class="ai-tool-card flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 rounded-lg" onclick="window.open('https://zhisheng.com', '_blank')">
+                            <div class="ai-tool-icon icon-zhisheng-yunpei mr-3"></div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-900">智声云配</h3>
+                                <p class="text-sm text-gray-500">多情绪、多语态的 AI 配音工具</p>
+                            </div>
+                        </div>
+
+                        <!-- 第3行 -->
+                        <!-- 音剪 -->
+                        <div class="ai-tool-card flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 rounded-lg" onclick="window.open('https://yinjian.com', '_blank')">
+                            <div class="ai-tool-icon icon-yinjian mr-3"></div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-900">音剪</h3>
+                                <p class="text-sm text-gray-500">多情感多模态的 AI 辅助工具</p>
+                            </div>
+                        </div>
+
+                        <!-- 海豚 Ai -->
+                        <div class="ai-tool-card flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 rounded-lg" onclick="window.open('https://haitun.ai', '_blank')">
+                            <div class="ai-tool-icon icon-haitun-ai mr-3"></div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-900">海豚 Ai</h3>
+                                <p class="text-sm text-gray-500">支持真人和二次元音色的配音工具</p>
+                            </div>
+                        </div>
+
+                        <!-- 琅琅配音 -->
+                        <div class="ai-tool-card flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 rounded-lg" onclick="window.open('https://langlang.ai', '_blank')">
+                            <div class="ai-tool-icon icon-langlang-peiying mr-3"></div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-900">琅琅配音</h3>
+                                <p class="text-sm text-gray-500">卓越的智能文本转语音工具</p>
+                            </div>
+                        </div>
+
+                        <!-- 即创 -->
+                        <div class="ai-tool-card flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 rounded-lg" onclick="window.open('https://jichuang.com', '_blank')">
+                            <div class="ai-tool-icon icon-jichuang-audio mr-3"></div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-900">即创</h3>
+                                <p class="text-sm text-gray-500">抖音旗下的一站式智能创作平台</p>
+                            </div>
+                        </div>
+
+                        <!-- 第4行 -->
+                        <!-- Mureka -->
+                        <div class="ai-tool-card flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 rounded-lg" onclick="window.open('https://mureka.ai', '_blank')">
+                            <div class="ai-tool-icon icon-mureka mr-3"></div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-900">Mureka</h3>
+                                <p class="text-sm text-gray-500">音乐推理大模型</p>
+                            </div>
+                        </div>
+
+                        <!-- fish -->
+                        <div class="ai-tool-card flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 rounded-lg" onclick="window.open('https://fish.audio', '_blank')">
+                            <div class="ai-tool-icon icon-fish mr-3"></div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-900">fish</h3>
+                                <p class="text-sm text-gray-500">一键语音克隆</p>
+                            </div>
+                        </div>
+
+                        <!-- weights -->
+                        <div class="ai-tool-card flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 rounded-lg" onclick="window.open('https://weights.gg', '_blank')">
+                            <div class="ai-tool-icon icon-weights mr-3"></div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-900">weights</h3>
+                                <p class="text-sm text-gray-500">翻唱、合唱、文字转语音</p>
+                            </div>
+                        </div>
+
+                        <!-- 空卡片 -->
+                        <div class="ai-tool-card flex items-center opacity-50">
+                            <div class="ai-tool-icon icon-empty-audio mr-3"></div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-400">待添加</h3>
+                                <p class="text-sm text-gray-400">暂无内容</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="comic" class="p-6 md:p-8 bg-white">
+                <div class="w-full">
+                    <div class="flex items-center mb-5">
+                        <div class="w-6 h-6 mr-2">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-700">
+                                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                            </svg>
+                        </div>
+                        <h2 class="text-xl font-semibold text-gray-900">AI 漫画</h2>
+                    </div>
+                    <!-- 工具卡片网格 -->
+                    <div class="ai-comic-tools-grid">
+                        <!-- 第1行 -->
+                        <!-- Jimeng AI -->
+                        <div class="ai-tool-card flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 rounded-lg" onclick="window.open('https://ac.qq.com', '_blank')">
+                            <div class="ai-tool-icon icon-jimeng-ai mr-3"></div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-900">Jimeng AI</h3>
+                                <p class="text-sm text-gray-500">腾讯漫画推出的 AI 漫画生成工具</p>
+                            </div>
+                        </div>
+
+                        <!-- Yijian AI -->
+                        <div class="ai-tool-card flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 rounded-lg" onclick="window.open('https://yijian.ai', '_blank')">
+                            <div class="ai-tool-icon icon-yijian-ai mr-3"></div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-900">Yijian AI</h3>
+                                <p class="text-sm text-gray-500">一键 AI 漫画生成工具</p>
+                            </div>
+                        </div>
+
+                        <!-- Picacomic -->
+                        <div class="ai-tool-card flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 rounded-lg" onclick="window.open('https://picacomic.com', '_blank')">
+                            <div class="ai-tool-icon icon-picacomic mr-3"></div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-900">Picacomic</h3>
+                                <p class="text-sm text-gray-500">漫画创作和分享平台</p>
+                            </div>
+                        </div>
+
+                        <!-- 第2行 -->
+                        <!-- Comic AI -->
+                        <div class="ai-tool-card flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 rounded-lg" onclick="window.open('https://comicai.ai', '_blank')">
+                            <div class="ai-tool-icon icon-comic-ai mr-3"></div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-900">Comic AI</h3>
+                                <p class="text-sm text-gray-500">智能漫画生成工具</p>
+                            </div>
+                        </div>
+
+                        <!-- NovelAI -->
+                        <div class="ai-tool-card flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 rounded-lg" onclick="window.open('https://novelai.net', '_blank')">
+                            <div class="ai-tool-icon icon-novelai mr-3"></div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-900">NovelAI</h3>
+                                <p class="text-sm text-gray-500">AI 文学和漫画创作平台</p>
+                            </div>
+                        </div>
+
+                        <!-- Waifu2x -->
+                        <div class="ai-tool-card flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 rounded-lg" onclick="window.open('https://waifu2x.udp.jp', '_blank')">
+                            <div class="ai-tool-icon icon-waifu2x mr-3"></div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-900">Waifu2x</h3>
+                                <p class="text-sm text-gray-500">图片放大和动漫风格化工具</p>
+                            </div>
+                        </div>
+
+                        <!-- 第3行 -->
+                        <!-- Getimg -->
+                        <div class="ai-tool-card flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 rounded-lg" onclick="window.open('https://getimg.ai', '_blank')">
+                            <div class="ai-tool-icon icon-getimg mr-3"></div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-900">Getimg</h3>
+                                <p class="text-sm text-gray-500">AI 图片生成和编辑工具</p>
+                            </div>
+                        </div>
+
+                        <!-- Artbreeder -->
+                        <div class="ai-tool-card flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 rounded-lg" onclick="window.open('https://artbreeder.com', '_blank')">
+                            <div class="ai-tool-icon icon-artbreeder mr-3"></div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-900">Artbreeder</h3>
+                                <p class="text-sm text-gray-500">AI 图像混合和进化工具</p>
+                            </div>
+                        </div>
+
+                        <!-- DeepAI -->
+                        <div class="ai-tool-card flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 rounded-lg" onclick="window.open('https://deepai.org', '_blank')">
+                            <div class="ai-tool-icon icon-deepai-comic mr-3"></div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-900">DeepAI</h3>
+                                <p class="text-sm text-gray-500">AI 图像生成和艺术创作工具</p>
+                            </div>
+                        </div>
+
+                        <!-- 第4行 -->
+                        <!-- Fotor -->
+                        <div class="ai-tool-card flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 rounded-lg" onclick="window.open('https://fotor.com', '_blank')">
+                            <div class="ai-tool-icon icon-fotor-comic mr-3"></div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-900">Fotor</h3>
+                                <p class="text-sm text-gray-500">在线图片编辑和 AI 艺术生成</p>
+                            </div>
+                        </div>
+
+                        <!-- NightCafe -->
+                        <div class="ai-tool-card flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 rounded-lg" onclick="window.open('https://nightcafe.studio', '_blank')">
+                            <div class="ai-tool-icon icon-nightcafe mr-3"></div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-900">NightCafe</h3>
+                                <p class="text-sm text-gray-500">AI 艺术创作和图像生成</p>
+                            </div>
+                        </div>
+
+                        <!-- StarryAI -->
+                        <div class="ai-tool-card flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 rounded-lg" onclick="window.open('https://starryai.com', '_blank')">
+                            <div class="ai-tool-icon icon-starryai mr-3"></div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-900">StarryAI</h3>
+                                <p class="text-sm text-gray-500">AI 艺术作品生成工具</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="office" class="p-6 md:p-8 bg-gray-50">
+                <div class="w-full">
+                    <div class="flex items-center mb-5">
+                        <div class="w-6 h-6 mr-2">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-700">
+                                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                                <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                                <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                            </svg>
+                        </div>
+                        <h2 class="text-xl font-semibold text-gray-900">AI 办公</h2>
+                    </div>
+                    <div class="bg-white rounded-xl p-8 text-center border border-gray-200">
+                        <i class="fas fa-briefcase text-6xl text-gray-300 mb-4"></i>
+                        <p class="text-gray-500">AI 办公工具正在开发中，敬请期待...</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        // 切换侧边栏（移动端）
+        function toggleSidebar() {
+            const sidebar = document.querySelector('.sidebar');
+            sidebar.classList.toggle('open');
+        }
+
+        // 平滑滚动到指定区块
+        function scrollToSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            if (section) {
+                section.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+
+                // 更新导航项状态
+                updateActiveNavItem(sectionId);
+            }
+
+            // 移动端关闭侧边栏
+            if (window.innerWidth < 768) {
+                toggleSidebar();
+            }
+        }
+
+        // 更新导航项激活状态
+        function updateActiveNavItem(sectionId) {
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+                const href = item.getAttribute('href');
+                if (href === `#${sectionId}`) {
+                    item.classList.add('active');
+                }
+            });
+        }
+
+        // 监听滚动事件，自动更新导航状态
+        function handleScroll() {
+            const sections = ['banner', 'qa', 'art', 'video', 'audio', 'comic', 'office'];
+            const scrollPosition = window.scrollY + 100;
+
+            for (const sectionId of sections) {
+                const section = document.getElementById(sectionId);
+                if (section) {
+                    const { top, bottom } = section.getBoundingClientRect();
+                    const absoluteTop = top + window.scrollY;
+                    const absoluteBottom = bottom + window.scrollY;
+
+                    if (absoluteTop <= scrollPosition && absoluteBottom > scrollPosition) {
+                        updateActiveNavItem(sectionId);
+                        break;
+                    }
+                }
+            }
+        }
+
+        // 筛选工具函数
+        function filterTools(category) {
+            const allCards = document.querySelectorAll('.tool-card');
+            const allTags = document.querySelectorAll('.category-tag');
+
+            // 更新标签状态
+            allTags.forEach(tag => {
+                tag.classList.remove('active');
+                if (tag.textContent.trim() === '推荐' && category === 'all') {
+                    tag.classList.add('active');
+                } else if (tag.textContent.trim() === category) {
+                    tag.classList.add('active');
+                }
+            });
+
+            // 筛选工具卡片
+            allCards.forEach(card => {
+                if (category === 'all') {
+                    card.style.display = 'block';
+                    setTimeout(() => {
+                        card.style.opacity = '1';
+                        card.style.transform = 'scale(1)';
+                    }, 50);
+                } else {
+                    const cardCategory = card.getAttribute('data-category');
+                    if (cardCategory === category) {
+                        card.style.display = 'block';
+                        setTimeout(() => {
+                            card.style.opacity = '1';
+                            card.style.transform = 'scale(1)';
+                        }, 50);
+                    } else {
+                        card.style.opacity = '0';
+                        card.style.transform = 'scale(0.8)';
+                        setTimeout(() => {
+                            card.style.display = 'none';
+                        }, 300);
+                    }
+                }
+            });
+        }
+
+        // 页面加载完成后的初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            // 添加滚动监听，自动更新导航状态
+            window.addEventListener('scroll', handleScroll);
+
+            // 添加页面滚动时的导航栏阴影效果
+            window.addEventListener('scroll', function() {
+                const main = document.querySelector('main');
+                if (window.scrollY > 10) {
+                    main.classList.add('shadow-lg');
+                } else {
+                    main.classList.remove('shadow-lg');
+                }
+            });
+
+            // 添加旧版工具卡片点击事件（如果存在）
+            document.querySelectorAll('.tool-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    const toolName = this.querySelector('h4').textContent;
+                    console.log(`点击了工具: ${toolName}`);
+
+                    // 添加点击反馈动画
+                    this.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        this.style.transform = '';
+                    }, 150);
+                });
+            });
+
+            // 添加新版AI工具卡片点击事件
+            document.querySelectorAll('.ai-tool-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    const toolName = this.querySelector('h3').textContent;
+                    const toolDesc = this.querySelector('p').textContent;
+                    console.log(`点击了AI工具: ${toolName} - ${toolDesc}`);
+
+                    // 添加点击反馈动画
+                    this.style.transform = 'scale(0.98)';
+                    setTimeout(() => {
+                        this.style.transform = 'scale(1)';
+                    }, 150);
+
+                    // 这里可以添加跳转到工具详情页的逻辑
+                    // window.open(`https://example.com/tool/${encodeURIComponent(toolName)}`, '_blank');
+                });
+
+                // 添加悬停效果
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-1px)';
+                });
+
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                });
+            });
+
+            // 为AI工具卡片添加键盘导航支持
+            const aiCardsArray = Array.from(document.querySelectorAll('.ai-tool-card'));
+            let currentAiIndex = -1;
+
+            aiCardsArray.forEach((card, index) => {
+                card.setAttribute('tabindex', '0');
+                card.setAttribute('role', 'button');
+                card.setAttribute('aria-label', `${card.querySelector('h3').textContent}: ${card.querySelector('p').textContent}`);
+            });
+
+            // 监听窗口大小变化
+            window.addEventListener('resize', function() {
+                if (window.innerWidth >= 768) {
+                    const sidebar = document.querySelector('.sidebar');
+                    sidebar.classList.remove('open');
+                }
+            });
+
+            // 为旧版工具卡片添加初始样式（如果存在）
+            document.querySelectorAll('.tool-card').forEach(card => {
+                card.style.transition = 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+            });
+
+            // 默认显示所有工具（如果存在筛选功能）
+            if (typeof filterTools === 'function') {
+                filterTools('all');
+            }
+
+            // 初始化页面时设置正确的导航状态
+            setTimeout(() => {
+                handleScroll();
+            }, 100);
+        });
+
+        // 添加键盘快捷键支持
+        document.addEventListener('keydown', function(e) {
+            // Ctrl/Cmd + K 打开搜索（可扩展）
+            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                e.preventDefault();
+                console.log('打开搜索功能');
+            }
+
+            // ESC 关闭移动端侧边栏
+            if (e.key === 'Escape' && window.innerWidth < 768) {
+                const sidebar = document.querySelector('.sidebar');
+                if (sidebar.classList.contains('open')) {
+                    toggleSidebar();
+                }
+            }
+        });
+    </script>
+</body>
+</html>
