@@ -6,6 +6,6 @@
     { "src": "images/**/*", "use": "@vercel/static" }
   ],
   "routes": [
-    { "src": "/", "dest": "/ai-tools-library.html" }
+    { "src": "/", "dest": "/index.html" }
   ]
 }
